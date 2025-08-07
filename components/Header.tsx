@@ -23,7 +23,7 @@ const Header = () => {
       <Link href="/" aria-label="Kukio's Blog">
         <div className="flex items-center justify-between">
           <span
-            className="text-3xl font-extrabold bg-gradient-to-r from-primary-500 via-pink-500 to-indigo-500 bg-clip-text text-transparent transition-all duration-300 hover:scale-105 hover:from-indigo-500 hover:to-primary-500 cursor-pointer animate-pulse"
+            className="from-primary-500 hover:to-primary-500 animate-pulse cursor-pointer bg-gradient-to-r via-pink-500 to-indigo-500 bg-clip-text text-3xl font-extrabold text-transparent transition-all duration-300 hover:scale-105 hover:from-indigo-500"
             style={{ letterSpacing: '0.05em' }}
           >
             Kukio&apos;s Blog
@@ -36,7 +36,7 @@ const Header = () => {
             <Link
               key={link.title}
               href={link.href}
-              className="hover:text-primary-500 dark:hover:text-primary-400 m-1 font-medium text-gray-900 dark:text-gray-100 transition-colors duration-200"
+              className="transition-colors duration-200 dark:text-gray-100 hover:text-primary-500 dark:hover:text-primary-400 m-1 font-medium text-gray-900"
             >
               {link.title}
             </Link>

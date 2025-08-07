@@ -1,8 +1,15 @@
+/*
+ * @Description: 
+ * @Date: 2025-08-07 19:10:17
+ * @LastEditTime: 2025-08-07 20:00:03
+ * @FilePath: \kukio.github.io\app\page.tsx
+ */
+
 'use client'
 
 import { useEffect, useState } from 'react'
 
-const lines = ['欢迎访问我的个人博客！', 'Hello World']
+const lines = ['欢迎访问我的个人博客！', 'Hello World!']
 
 export default function Home() {
   const [display, setDisplay] = useState(['', ''])
@@ -31,8 +38,8 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="flex flex-col items-center justify-center h-[60vh] text-3xl font-bold select-none">
-      <div className="mb-2 text-primary-500 tracking-wide">
+    <div className="flex h-[60vh] select-none flex-col items-center justify-center text-3xl font-bold">
+      <div className="mb-2 tracking-wide text-primary-500">
         {display[0]}
         {display[0].length < lines[0].length && <span className="animate-pulse">|</span>}
       </div>
