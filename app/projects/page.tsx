@@ -54,13 +54,17 @@ export default function Projects() {
       </div>
       {openIdx !== null && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+          className="animate-scale-in fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
           role="dialog"
           aria-modal="true"
           onClick={() => setOpenIdx(null)}
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') setOpenIdx(null)
+          }}
         >
           <div
-            className="mb-4 w-full rounded animate-scale-in relative mx-4 max-w-lg bg-white p-8 shadow-2xl dark:bg-gray-950"
+            className="animate-scale-in relative mx-4 mb-4 w-full max-w-lg rounded bg-white p-8 shadow-2xl dark:bg-gray-950"
             style={{
               animation: 'scaleIn 0.3s cubic-bezier(.4,2,.3,1) forwards',
             }}
@@ -68,7 +72,7 @@ export default function Projects() {
             role="document"
           >
             <button
-              className="absolute top-4 right-4 text-2xl font-bold text-gray-400 hover:text-primary-500"
+              className="hover:text-primary-500 absolute top-4 right-4 text-2xl font-bold text-gray-400"
               onClick={() => setOpenIdx(null)}
               aria-label="关闭详情"
             >
