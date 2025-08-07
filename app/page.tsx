@@ -9,7 +9,7 @@
 
 import { useEffect, useState } from 'react'
 
-const lines = ['欢迎访问我的个人博客！', 'Hello World!']
+const lines = ['欢迎访问我的个人博客！', 'Hello World']
 
 export default function Home() {
   const [display, setDisplay] = useState(['', ''])
