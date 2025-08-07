@@ -1,10 +1,3 @@
-/*
- * @Description: 
- * @Date: 2025-08-07 19:10:17
- * @LastEditTime: 2025-08-07 20:00:03
- * @FilePath: \kukio.github.io\app\page.tsx
- */
-
 'use client'
 
 import { useEffect, useState } from 'react'

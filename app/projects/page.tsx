@@ -1,35 +1,102 @@
+'use client'
+
+// export { metadata } from './metadata.ts'
+
+import { useState } from 'react'
 import projectsData from '@/data/projectsData'
 import Card from '@/components/Card'
-import { genPageMetadata } from 'app/seo'
-
-export const metadata = genPageMetadata({ title: 'Projects' })
 
 export default function Projects() {
+  const [openIdx, setOpenIdx] = useState<number | null>(null)
+
+  // 示例数据格式：
+  // const projectsData = [
+  //   {
+  //     title: '项目A',
+  //     description: '这是项目A的简要描述。',
+  //     imgSrc: '/static/images/project-a.png',
+  //     detail: `123项目A的详细信息。这里可以包含更多关于项目的背景、技术栈、功能特点等内容。\n\n- 技术栈：React, Node.js, MongoDB\n- 功能：用户认证、数据可视化、实时通知等\n\n更多信息请访问 [项目A官网](https://example.com/project-a)`,
+  //   },
+  //   {
+  //     title: '项目B',
+  //     description: '这是项目B的简要描述。',
+  //     imgSrc: '/static/images/project-b.png',
+  //     detail: `项目B的详细信息。这里可以包含更多关于项目的背景、技术栈、功能特点等内容。\n\n- 技术栈：Vue.js, Express, MySQL\n- 功能：内容管理、用户评论、数据分析等\n\n更多信息请访问 [项目B官网](https://example.com/project-b)`,
+  //   },
+  // ]
+
   return (
     <>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="space-y-2 pt-6 pb-8 md:space-y-5">
           <h1 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 dark:text-gray-100">
-            Projects
+            项目日志
           </h1>
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            Showcase your projects with a hero image (16 x 9)
+            {/* Showcase your projects with a hero image (16 x 9) */}
+            近期的项目日志
           </p>
         </div>
         <div className="container py-12">
-          <div className="-m-4 flex flex-wrap">
-            {projectsData.map((d) => (
+          <div className="flex flex-wrap justify-center gap-y-8">
+            {projectsData.map((d, idx) => (
               <Card
                 key={d.title}
                 title={d.title}
                 description={d.description}
                 imgSrc={d.imgSrc}
-                href={d.href}
+                onDetailClick={() => setOpenIdx(idx)}
               />
             ))}
           </div>
         </div>
       </div>
+      {openIdx !== null && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+          onClick={() => setOpenIdx(null)}
+        >
+          <div
+            className="relative bg-white dark:bg-gray-950 rounded-xl shadow-2xl p-8 max-w-lg w-full mx-4 animate-scale-in"
+            style={{
+              animation: 'scaleIn 0.3s cubic-bezier(.4,2,.3,1) forwards',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="absolute top-4 right-4 text-gray-400 hover:text-primary-500 text-2xl font-bold"
+              onClick={() => setOpenIdx(null)}
+              aria-label="关闭详情"
+            >
+              X
+            </button>
+            <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-gray-100">
+              {projectsData[openIdx].title}
+            </h2>
+            <img
+              src={projectsData[openIdx].imgSrc}
+              alt={projectsData[openIdx].title}
+              className="mb-4 rounded w-full object-cover"
+              style={{ maxHeight: 200 }}
+            />
+            <div className="text-gray-700 dark:text-gray-200 whitespace-pre-line">
+              {projectsData[openIdx].detail}
+            </div>
+          </div>
+          <style jsx global>{`
+            @keyframes scaleIn {
+              0% {
+                transform: scale(0.7);
+                opacity: 0;
+              }
+              100% {
+                transform: scale(1);
+                opacity: 1;
+              }
+            }
+          `}</style>
+        </div>
+      )}
     </>
   )
 }
