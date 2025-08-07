@@ -78,7 +78,7 @@ export default function Projects() {
               {projectsData[openIdx].title}
             </h2>
             <Image
-              src={projectsData[openIdx].imgSrc}
+              src={projectsData[openIdx].imgSrc ?? '/static/images/default.png'}
               alt={projectsData[openIdx].title}
               className="mb-4 w-full rounded object-cover"
               width={544}
