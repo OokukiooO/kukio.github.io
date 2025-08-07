@@ -53,22 +53,32 @@ export default function Projects() {
       </div>
       {openIdx !== null && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+          className="animate-scale-in fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+          role="dialog"
+          tabIndex={-1}
           onClick={() => setOpenIdx(null)}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') setOpenIdx(null)
+          }}
         >
           <div
-            className="relative bg-white dark:bg-gray-950 rounded-xl shadow-2xl p-8 max-w-lg w-full mx-4 animate-scale-in"
+            className="animate-scale-in relative mx-4 w-full max-w-lg rounded-xl bg-white p-8 shadow-2xl dark:bg-gray-950"
             style={{
               animation: 'scaleIn 0.3s cubic-bezier(.4,2,.3,1) forwards',
             }}
             onClick={(e) => e.stopPropagation()}
+            role="document"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') setOpenIdx(null)
+            }}
           >
             <button
-              className="absolute top-4 right-4 text-gray-400 hover:text-primary-500 text-2xl font-bold"
+              className="hover:text-primary-500 absolute top-4 right-4 text-2xl font-bold text-gray-400"
               onClick={() => setOpenIdx(null)}
               aria-label="关闭详情"
             >
-              X
+              ×
             </button>
             <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-gray-100">
               {projectsData[openIdx].title}
@@ -76,10 +86,10 @@ export default function Projects() {
             <img
               src={projectsData[openIdx].imgSrc}
               alt={projectsData[openIdx].title}
-              className="mb-4 rounded w-full object-cover"
+              className="w-full rounded mb-4 object-cover"
               style={{ maxHeight: 200 }}
             />
-            <div className="text-gray-700 dark:text-gray-200 whitespace-pre-line">
+            <div className="whitespace-pre-line text-gray-700 dark:text-gray-200">
               {projectsData[openIdx].detail}
             </div>
           </div>
