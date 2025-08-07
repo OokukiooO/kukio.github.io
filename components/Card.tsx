@@ -18,7 +18,9 @@ const Card = ({ title, description, imgSrc, onDetailClick }) => (
       )}
       <div className="flex flex-1 flex-col p-6">
         <h2 className="mb-3 text-2xl leading-8 font-bold tracking-tight">{title}</h2>
-        <p className="flex-1 text-gray-500 dark:text-gray-400 mb-3 max-w-none prose">{description}</p>
+        <p className="prose mb-3 max-w-none flex-1 text-gray-500 dark:text-gray-400">
+          {description}
+        </p>
         <button
           className="bg-primary-500 hover:bg-primary-600 mt-2 self-start rounded px-4 py-2 font-semibold text-white shadow transition"
           onClick={onDetailClick}

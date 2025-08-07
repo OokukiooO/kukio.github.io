@@ -31,7 +31,7 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="flex-col items-center justify-center text-3xl font-bold select-none h-[60vh] flex">
+    <div className="h-[60vh] flex-col items-center justify-center text-3xl font-bold select-none flex">
       <div className="text-primary-500 mb-2 tracking-wide">
         {display[0]}
         {display[0].length < lines[0].length && <span className="animate-pulse">|</span>}

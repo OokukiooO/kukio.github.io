@@ -5,6 +5,7 @@
 import { useState } from 'react'
 import projectsData from '@/data/projectsData'
 import Card from '@/components/Card'
+import Image from 'next/image'
 
 export default function Projects() {
   const [openIdx, setOpenIdx] = useState<number | null>(null)
@@ -53,28 +54,21 @@ export default function Projects() {
       </div>
       {openIdx !== null && (
         <div
-          className="animate-scale-in fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
           role="dialog"
-          tabIndex={-1}
+          aria-modal="true"
           onClick={() => setOpenIdx(null)}
-          onKeyDown={(e) => {
-            if (e.key === 'Escape') setOpenIdx(null)
-          }}
         >
           <div
-            className="animate-scale-in relative mx-4 w-full max-w-lg rounded-xl bg-white p-8 shadow-2xl dark:bg-gray-950"
+            className="mb-4 w-full rounded animate-scale-in relative mx-4 max-w-lg bg-white p-8 shadow-2xl dark:bg-gray-950"
             style={{
               animation: 'scaleIn 0.3s cubic-bezier(.4,2,.3,1) forwards',
             }}
             onClick={(e) => e.stopPropagation()}
             role="document"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === 'Escape') setOpenIdx(null)
-            }}
           >
             <button
-              className="hover:text-primary-500 absolute top-4 right-4 text-2xl font-bold text-gray-400"
+              className="absolute top-4 right-4 text-2xl font-bold text-gray-400 hover:text-primary-500"
               onClick={() => setOpenIdx(null)}
               aria-label="关闭详情"
             >
@@ -83,10 +77,12 @@ export default function Projects() {
             <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-gray-100">
               {projectsData[openIdx].title}
             </h2>
-            <img
+            <Image
               src={projectsData[openIdx].imgSrc}
               alt={projectsData[openIdx].title}
-              className="w-full rounded mb-4 object-cover"
+              className="mb-4 w-full rounded object-cover"
+              width={544}
+              height={306}
               style={{ maxHeight: 200 }}
             />
             <div className="whitespace-pre-line text-gray-700 dark:text-gray-200">
