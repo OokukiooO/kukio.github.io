@@ -62,6 +62,7 @@ const unoptimized = process.env.UNOPTIMIZED ? true : undefined
  **/
 module.exports = () => {
   const plugins = [withContentlayer, withBundleAnalyzer]
+  const basePath = process.env.BASE_PATH || '/ookukiooo.github.io'
   return plugins.reduce((acc, next) => next(acc), {
     output,
     reactStrictMode: true,
@@ -79,6 +80,8 @@ module.exports = () => {
       ],
       unoptimized,
     },
+    basePath,
+    assetPrefix: basePath,
     async headers() {
       return [
         {

@@ -10,7 +10,7 @@
     "analyze": "cross-env ANALYZE=true next build",
     "lint": "next lint --fix --dir pages --dir app --dir components --dir lib --dir layouts --dir scripts",
     "prepare": "husky",
-    "build:gh": "cross-env EXPORT=1 UNOPTIMIZED=1 yarn build"
+    "build:gh": "cross-env EXPORT=1 UNOPTIMIZED=1 BASE_PATH=/ookukiooo.github.io yarn build"
   },
   "dependencies": {
     "@headlessui/react": "2.2.0",
