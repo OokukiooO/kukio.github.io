@@ -1,5 +1,4 @@
 const { withContentlayer } = require('next-contentlayer2')
-
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
@@ -62,7 +61,18 @@ const unoptimized = process.env.UNOPTIMIZED ? true : undefined
  **/
 module.exports = () => {
   const plugins = [withContentlayer, withBundleAnalyzer]
-  const basePath = process.env.BASE_PATH || '/ookukiooo.github.io'
+
+  // 使用环境变量控制，示例：
+  // 用户主页仓库 -> 不设置 BASE_PATH
+  // 项目页仓库(例如 repo = kukio.github.io) -> BASE_PATH=/kukio.github.io
+  let basePath = process.env.BASE_PATH || ''
+  if (basePath === '/' || basePath.trim() === '') {
+    basePath = ''
+  } else {
+    // 规范化：前缀加 /，去掉尾随 /
+    basePath = '/' + basePath.replace(/^\/+/, '').replace(/\/+$/, '')
+  }
+
   return plugins.reduce((acc, next) => next(acc), {
     output,
     reactStrictMode: true,
@@ -72,16 +82,16 @@ module.exports = () => {
       dirs: ['app', 'components', 'layouts', 'scripts'],
     },
     images: {
-      remotePatterns: [
-        {
-          protocol: 'https',
-          hostname: 'picsum.photos',
-        },
-      ],
+      remotePatterns: [{ protocol: 'https', hostname: 'picsum.photos' }],
       unoptimized,
     },
-    basePath,
-    assetPrefix: basePath,
+    // 仅当是项目页才设置 basePath/assetPrefix
+    ...(basePath
+      ? {
+          basePath,
+          assetPrefix: basePath,
+        }
+      : {}),
     async headers() {
       return [
         {
@@ -90,12 +100,11 @@ module.exports = () => {
         },
       ]
     },
-    webpack: (config, options) => {
+    webpack: (config) => {
       config.module.rules.push({
         test: /\.svg$/,
         use: ['@svgr/webpack'],
       })
-
       return config
     },
   })
