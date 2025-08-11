@@ -2,7 +2,7 @@
 
 // export { metadata } from './metadata.ts'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import projectsData from '@/data/projectsData'
 import Card from '@/components/Card'
 import Image from 'next/image'
@@ -25,6 +25,15 @@ export default function Projects() {
   //     detail: `项目B的详细信息。这里可以包含更多关于项目的背景、技术栈、功能特点等内容。\n\n- 技术栈：Vue.js, Express, MySQL\n- 功能：内容管理、用户评论、数据分析等\n\n更多信息请访问 [项目B官网](https://example.com/project-b)`,
   //   },
   // ]
+
+  // 添加 ESC 关闭逻辑
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpenIdx(null)
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [setOpenIdx])
 
   return (
     <>
@@ -54,31 +63,34 @@ export default function Projects() {
       </div>
       {openIdx !== null && (
         <div
-          className="animate-scale-in fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
           role="dialog"
           aria-modal="true"
-          onClick={() => setOpenIdx(null)}
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === 'Escape') setOpenIdx(null)
-          }}
         >
+          {/* 若仍希望点击遮罩关闭，可单独放一个覆盖层按钮 */}
+          <button
+            type="button"
+            aria-label="关闭弹窗"
+            onClick={() => setOpenIdx(null)}
+            className="absolute inset-0 cursor-pointer"
+            style={{ background: 'transparent' }}
+          />
           <div
             className="animate-scale-in relative mx-4 mb-4 w-full max-w-lg rounded bg-white p-8 shadow-2xl dark:bg-gray-950"
-            style={{
-              animation: 'scaleIn 0.3s cubic-bezier(.4,2,.3,1) forwards',
-            }}
-            onClick={(e) => e.stopPropagation()}
-            role="document"
+            style={{ animation: 'scaleIn 0.3s cubic-bezier(.4,2,.3,1) forwards' }}
           >
             <button
-              className="hover:text-primary-500 absolute top-4 right-4 text-2xl font-bold text-gray-400"
+              type="button"
               onClick={() => setOpenIdx(null)}
-              aria-label="关闭详情"
+              aria-label="关闭"
+              className="hover:text-primary-500 absolute top-4 right-4 text-2xl font-bold text-gray-400"
             >
               ×
             </button>
-            <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-gray-100">
+            <h2
+              id="project-dialog-title"
+              className="mb-4 text-2xl font-bold text-gray-900 dark:text-gray-100"
+            >
               {projectsData[openIdx].title}
             </h2>
             <Image
