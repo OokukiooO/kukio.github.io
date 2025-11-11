@@ -29,7 +29,13 @@ jobs:
           cache: npm
 
       - name: Install deps
-        run: npm ci
+        shell: bash
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
 
       - name: Configure env for GitHub Pages
         shell: bash
