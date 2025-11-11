@@ -57,21 +57,27 @@ const output = process.env.EXPORT ? 'export' : undefined
 const unoptimized = process.env.UNOPTIMIZED ? true : undefined
 
 /**
- * @type {import('next/dist/next-server/server/config').NextConfig}
- **/
+ * 说明：GitHub Pages 的项目页会部署在 https://<user>.github.io/<repo>/
+ * 如果未设置 BASE_PATH，这里在 GitHub Actions 环境下自动根据仓库名推断 basePath。
+ * 用户主页仓库（<user>.github.io）则不需要 basePath。
+ */
+const [__owner = '', __repo = ''] = (process.env.GITHUB_REPOSITORY || '').split('/')
+const __isUserSiteRepo = __repo && __owner && __repo.toLowerCase() === `${__owner.toLowerCase()}.github.io`
+
+// 使用环境变量控制，示例：
+// 用户主页仓库 -> 不设置 BASE_PATH
+// 项目页仓库(例如 repo = kukio.github.io) -> BASE_PATH=/kukio.github.io
+let basePath = process.env.BASE_PATH
+if (typeof basePath !== 'string') {
+  // 未显式设置 BASE_PATH 时：如果是项目页仓库，默认使用仓库名作为 basePath；否则置空
+  basePath = !__isUserSiteRepo && __repo ? `/${__repo}` : ''
+}
+// 规范化：去掉多余的斜杠；若仅为'/'则置空
+basePath = (basePath || '').replace(/\s+/g, '')
+basePath = basePath === '/' ? '' : `/${basePath.replace(/^\/+|\/+$|\s+/g, '')}`.replace(/^\/$/, '')
+
 module.exports = () => {
   const plugins = [withContentlayer, withBundleAnalyzer]
-
-  // 使用环境变量控制，示例：
-  // 用户主页仓库 -> 不设置 BASE_PATH
-  // 项目页仓库(例如 repo = kukio.github.io) -> BASE_PATH=/kukio.github.io
-  let basePath = process.env.BASE_PATH || ''
-  if (basePath === '/' || basePath.trim() === '') {
-    basePath = ''
-  } else {
-    // 规范化：前缀加 /，去掉尾随 /
-    basePath = '/' + basePath.replace(/^\/+/, '').replace(/\/+$/, '')
-  }
 
   return plugins.reduce((acc, next) => next(acc), {
     output,
